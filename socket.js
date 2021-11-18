@@ -1,11 +1,11 @@
 const { rooms } = require("./Classes/Room");
 
 const roomIdDictionary = {};
+const userIdDictionary = {};
 
 const initiateSocket = (io) => {
-  console.log(io);
   io.on("connection", (socket) => {
-    socket.on("join", (roomcode) => {
+    socket.on("join", (roomcode, id) => {
       socket.join(roomcode);
 
       //broadcast guests list
@@ -16,6 +16,7 @@ const initiateSocket = (io) => {
       socket.emit("updateCalendar", rooms[roomcode].getCalendar());
 
       roomIdDictionary[socket.id] = roomcode;
+      userIdDictionary[socket.id] = id;
     });
 
     socket.on("setIcon", (date, icon, index) => {
@@ -24,11 +25,13 @@ const initiateSocket = (io) => {
       socket.in(roomcode).emit("updateCalendar", rooms[roomcode].getCalendar());
     });
 
-    socket.on("disconnect", () => {
+    socket.on("disconnect", (id) => {
       const roomcode = roomIdDictionary[socket.id];
+      console.log("disconnect!");
       if (rooms[roomcode]) {
-        rooms[roomcode].removeMember(socket.id);
+        rooms[roomcode].exitMember(userIdDictionary[socket.id]);
         socket.in(roomcode).emit("getGuests", rooms[roomcode].getMembers());
+        console.log(rooms[roomcode]);
       }
     });
 

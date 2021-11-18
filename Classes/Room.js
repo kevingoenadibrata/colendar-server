@@ -25,14 +25,11 @@ class Room {
   }
 
   addMember(id, name) {
-    console.log(id);
-    console.log(this.members);
     for (let i = 0; i < this.members.length; i++) {
       if (this.members[i].id === id) {
         this.members[i].name = name;
         this.members[i].isOccupied = true;
         this.members[i].isActive = true;
-        console.log(this.members[i]);
         return i;
       }
     }
@@ -49,10 +46,11 @@ class Room {
     return -1;
   }
 
-  removeMember(id) {
+  exitMember(id) {
+    console.log(id);
     for (let i = 0; i < this.members.length; i++) {
       if (this.members[i].id === id) {
-        this.members[i].isOccupied = false;
+        this.members[i].isActive = false;
       }
     }
   }
@@ -71,7 +69,7 @@ class Room {
   }
 
   getMembers() {
-    return this.members.filter((item) => item.isOccupied);
+    return this.members.filter((item) => item.isOccupied && item.isActive);
   }
 }
 

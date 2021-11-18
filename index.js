@@ -85,7 +85,6 @@ app.post("/join/:id", (req, res) => {
 app.post("/rooms", (req, res) => {
   const roomid = getRoomCode();
   rooms[roomid] = new Room(roomid);
-  console.log(roomid);
   res.send({ roomcode: roomid, ok: true });
 });
 
