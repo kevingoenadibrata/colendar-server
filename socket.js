@@ -25,6 +25,18 @@ const initiateSocket = (io) => {
       socket.in(roomcode).emit("updateCalendar", rooms[roomcode].getCalendar());
     });
 
+    socket.on("clearCalendar", () => {
+      let roomcode = roomIdDictionary[socket.id];
+      rooms[roomcode].clearCalendar();
+      socket.in(roomcode).emit("updateCalendar", rooms[roomcode].getCalendar());
+    });
+
+    socket.on("clearMarking", (i) => {
+      let roomcode = roomIdDictionary[socket.id];
+      rooms[roomcode].clearMarkings(i);
+      socket.in(roomcode).emit("updateCalendar", rooms[roomcode].getCalendar());
+    });
+
     socket.on("disconnect", (id) => {
       const roomcode = roomIdDictionary[socket.id];
       console.log("disconnect!");

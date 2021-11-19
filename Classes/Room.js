@@ -20,6 +20,16 @@ class Room {
     this.calendar[date][index] = icon;
   }
 
+  clearMarkings(index) {
+    for (let key in this.calendar) {
+      this.calendar[key][index] = 0;
+    }
+  }
+
+  clearCalendar() {
+    this.calendar = {};
+  }
+
   getCalendar() {
     return this.calendar;
   }
